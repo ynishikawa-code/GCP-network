@@ -1,6 +1,21 @@
 ---
 - name: Configure Web Server
   hosts: web
-  become: yes
+  become: true
   roles:
     - nginx
+- name: Install Certbot
+  dnf:
+    name: epel-release
+    state: present
+
+- name: Install Certbot
+  dnf:
+    name: certbot
+    state: present
+
+- name: Obtain Let's Encrypt cert
+  command: >
+    certbot certonly --nginx --non-interactive
+    --agree-tos -m your-email@example.com
+    -d yourdomain.example.com

@@ -26,7 +26,7 @@ resource "google_compute_firewall" "allow_http_ssh" {
 
 resource "google_compute_instance" "default" {
   name         = var.instance_name
-  machine_type = "e2-micro"
+  machine_type = "e2-medium"
   zone         = var.zone
 
   boot_disk {

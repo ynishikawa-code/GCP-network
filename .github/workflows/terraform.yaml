@@ -1,0 +1,32 @@
+name: Terraform Apply
+
+on:
+  push:
+    paths:
+      - 'terraform/**'
+      - '.github/workflows/terraform.yml'
+
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v3
+      with:
+        terraform_version: 1.5.7
+
+    - name: Authenticate with GCP
+      run: |
+        echo "${{ secrets.GCP_CREDENTIALS }}" > creds.json
+
+    - name: Terraform Init
+      run: terraform init
+      working-directory: terraform
+
+    - name: Terraform Apply
+      run: terraform apply -auto-approve -var="project_id=${{ secrets.PROJECT_ID }}"
+      working-directory: terraform

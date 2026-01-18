@@ -1,0 +1,28 @@
+name: Ansible Deploy
+
+on:
+  push:
+    paths:
+      - 'ansible/**'
+      - '.github/workflows/ansible.yml'
+
+jobs:
+  ansible:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Setup SSH
+      run: |
+        echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
+        ssh-keyscan -H ${{ secrets.VM_HOST }} >> ~/.ssh/known_hosts
+
+    - name: Run Ansible
+      run: |
+        sudo apt update && sudo apt install -y ansible
+        echo "[web]" > inventory
+        echo "${{ secrets.VM_HOST }} ansible_user=${{ secrets.ANSIBLE_USER }} ansible_ssh_private_key_file=~/.ssh/id_rsa" >> inventory
+        ansible-playbook -i inventory ansible/playbook.yml
