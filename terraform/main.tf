@@ -45,7 +45,8 @@ resource "google_compute_instance" "default" {
   }
 
   metadata = {
-    ssh-keys = "rocky:${file("~/.ssh/id_rsa.pub")}"
+    enable-oslogin = "TRUE"
+
   }
 
   tags = ["http-server"]
