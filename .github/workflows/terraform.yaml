@@ -2,9 +2,15 @@ name: Terraform Apply
 
 on:
   push:
-    paths:
-      - 'terraform/**'
-      - '.github/workflows/terraform.yml'
+    branches:
+      - main
+  workflow_dispatch:
+
+
+      
+
+
+
 
 jobs:
   terraform:
