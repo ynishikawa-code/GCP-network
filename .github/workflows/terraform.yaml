@@ -28,6 +28,8 @@ jobs:
     - name: Authenticate with GCP
       run: |
         echo "${{ secrets.GCP_CREDENTIALS }}" > creds.json
+        echo "GOOGLE_APPLICATION_CREDENTIALS=$PWD/creds.json" >> $GITHUB_ENV
+
 
     - name: Terraform Init
       run: terraform init
