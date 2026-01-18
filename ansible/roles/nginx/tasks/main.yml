@@ -1,0 +1,19 @@
+---
+- name: Install nginx
+  become: true
+  dnf:
+    name: nginx
+    state: present
+
+- name: Enable and start nginx
+  become: true
+  systemd:
+    name: nginx
+    state: started
+    enabled: true
+
+- name: Deploy index.html
+  become: true
+  copy:
+    content: "Hello from Ansible on Rocky Linux!"
+    dest: /usr/share/nginx/html/index.html
